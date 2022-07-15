@@ -48,7 +48,7 @@ After a bit more digging, it seems that CGI scripts are typically shell, cgi, or
 
 Traveling to the address prompts me to download the script, which I do. I’ll cat the file out to see what its contents are. The contents look like the results of the `uptime` command. So this is probably a script ruinning on the box.
 
-![Untitled](shell_script.png)
+![Untitled](/shocker/POC/shell_script.png)
 
 ## Shellshock
 
@@ -95,7 +95,7 @@ We’re in!
 
 Running `whoami` we can see we are the user shelly, first I’ll navigate to the users home directory and grab the user flag.
 
-![Untitled](user_flag.png)
+![Untitled](/shocker/POC/user_flag.png)
 
 # Privelege Escalation
 
