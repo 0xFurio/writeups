@@ -10,7 +10,7 @@ I start off with a simple nmap of the system. Looks like the system is running a
 nmap -sC -sV shocker.htb > nmap.txt
 ```
 
-![Untitled](Shocker%20e328b70ca7964b4abdf06a6b715b9edc/Untitled.png)
+![Untitled](POC/nmap.png)
 
 ## Website
 
