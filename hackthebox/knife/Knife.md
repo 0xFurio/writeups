@@ -1,5 +1,3 @@
-# Knife
-
 # Enumeration
 
 ## Nmap
