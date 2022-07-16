@@ -1,12 +1,10 @@
-# Lame
-
 # Enumeration
 
 ## Nmap
 
 My initial nmap scan reveals that this box is running FTP over port 21, SSH over port 22, and SMB over ports 139 and 445.
 
-![Untitled](Lame%20476e2d869d2a43b4b00bc7aaac246927/Untitled.png)
+![Untitled](POC/nmap.png)
 
 I see that Anonymous login is allowed over FTP, so I’ll start with that.
 
@@ -14,7 +12,7 @@ I see that Anonymous login is allowed over FTP, so I’ll start with that.
 
 Logging into FTP shows that the box is running vsftpd 2.3.4, and there appears to be no files in the directory. 
 
-![Untitled](Lame%20476e2d869d2a43b4b00bc7aaac246927/Untitled%201.png)
+![Untitled](POC/ftp.png)
 
 A quick search shows that vsftpd 2.3.4 is vulnerable to [backdoor command execution](https://www.exploit-db.com/exploits/49757). Before moving forward, I would still like to explore the SMB running on this box before attempting to exploit anything.
 
@@ -44,20 +42,20 @@ smbmap -H lame.htb
 
 The results show me that only the `/tmp` share can be accessed, without proper credentials, so thats what Ill connect to. I start up a netcat listener over port 1234 to catch my shell and connect to the share using `smbclient`. Once I’m connected, I issue the `logon` command followed by my payload. I’m asked for a password, so I try hitting enter to see what happens.
 
-![Untitled](Lame%20476e2d869d2a43b4b00bc7aaac246927/Untitled%202.png)
+![Untitled](POC/smb.png)
 
 I get a connection back to my listener with a shell. A whoami check reveals that this is a root shell, no escalation needed!
 
-![Untitled](Lame%20476e2d869d2a43b4b00bc7aaac246927/Untitled%203.png)
+![Untitled](POC/root.png)
 
 ## User Flag
 
 Ill navigate to the home directory and find a user named makis. This user’s home directory contains the user flag.
 
-![Untitled](Lame%20476e2d869d2a43b4b00bc7aaac246927/Untitled%204.png)
+![Untitled](POC/user_flag.png)
 
 ## Root Flag
 
 Lastly, I’ll grab the root flag from the root directory!
 
-![Untitled](Lame%20476e2d869d2a43b4b00bc7aaac246927/Untitled%205.png)
+![Untitled](POC/root_flag.png)
