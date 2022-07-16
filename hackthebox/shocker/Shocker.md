@@ -1,5 +1,3 @@
-# Shocker
-
 # Enumeration
 
 ## Nmap
