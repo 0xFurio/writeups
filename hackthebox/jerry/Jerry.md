@@ -1,5 +1,3 @@
-# Jerry
-
 # Enumeration
 
 ## Nmap
