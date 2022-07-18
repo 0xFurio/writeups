@@ -48,7 +48,7 @@ I set up a `netcat` listener to catch my reverse shell, and run the python scrip
 
 ![Untitled](POC/impacket.png)
 
-This is an issue I’ve had before, even though I do have impacket installed. I tried uninstalling and reinstalling the modules and still recieve the same error, so I decide to try running the script in `python3`. This time, the exploit starts to work, but then hangs before generating the reverse shell.
+This is an issue I’ve had before, even though I do have impacket installed. I tried uninstalling and reinstalling the modules and still recieve the same error, so I decide to try running the script in `python3`. This time, the exploit starts to work, but then hangs before generating the shell.
 
 ![Untitled](POC/no_response.png)
 
