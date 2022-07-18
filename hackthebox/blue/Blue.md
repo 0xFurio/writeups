@@ -68,7 +68,7 @@ Before giving up on this script, I decide to try one more shellcode, `sc_x64.bin
 
 ![Untitled](POC/exploited.png)
 
-A `whoami` command reveals that I have been given a system shell, and will not have to escalate priviledges at all.
+A `whoami` command reveals that I have been given a system shell, and will not have to escalate privileges at all.
 
 ![Untitled](POC/system.png)
 
