@@ -50,7 +50,7 @@ I set up a `netcat` listener to catch my reverse shell, and run the python scrip
 
 This is an issue I’ve had before, even though I do have impacket installed. I tried uninstalling and reinstalling the modules and still recieve the same error, so I decide to try running the script in `python3`. This time, the exploit starts to work, but then hangs before generating the reverse shell.
 
-![Untitled](no_response.png)
+![Untitled](POC/no_response.png)
 
 Since I am not 100% sure I’m using the correct shellcode, I decide to try the `sc_all.bin`, which sounds like a more general payload. This time I’m given a “No route to host” error, so now I’m starting to think I may have crashed the box.
 
