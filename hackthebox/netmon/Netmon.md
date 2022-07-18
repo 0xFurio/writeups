@@ -88,10 +88,10 @@ When I hit save, I get sent back to the notifications page. First, I head back t
 
 After the test notification is triggered, the shell is sent back to my listener. I run `whoami` and see that this is indeed a system shell!
 
-![Untitled](system.png)
+![Untitled](POC/system.png)
 
 ## Root Flag
 
 All that’s left to do is head to the Administrator desktop and grab the root flag!
 
-![Untitled](root_flag.png)
+![Untitled](POC/root_flag.png)
